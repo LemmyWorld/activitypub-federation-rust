@@ -24,16 +24,16 @@ mod http;
 mod objects;
 mod utils;
 
-const DOMAIN: &str = "example.com";
+const DOMAIN: &str = "test.join-lemmy.org";
 const LOCAL_USER_NAME: &str = "alison";
 const BIND_ADDRESS: &str = "localhost:8003";
 
 #[actix_rt::main]
 async fn main() -> Result<(), Error> {
     env_logger::builder()
-        .filter_level(LevelFilter::Warn)
-        .filter_module("activitypub_federation", LevelFilter::Info)
-        .filter_module("live_federation", LevelFilter::Info)
+        .filter_level(LevelFilter::Debug)
+        .filter_module("activitypub_federation", LevelFilter::Debug)
+        .filter_module("live_federation", LevelFilter::Debug)
         .format_timestamp(None)
         .init();
 

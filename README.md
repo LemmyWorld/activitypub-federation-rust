@@ -6,7 +6,9 @@ Activitypub-Federation
 
 <!-- be sure to keep this file in sync with docs/01_intro.md -->
 
-A high-level framework for [ActivityPub](https://www.w3.org/TR/activitypub/) federation in Rust. The goal is to encapsulate all basic functionality, so that developers can easily use the protocol without any prior knowledge.
+A high-level framework for [ActivityPub](https://www.w3.org/TR/activitypub/) federation in Rust. It takes care of basic functionality like HTTP Signatures, activity sending, and fetching data from other servers. Application developers can focus on the main logic, and treat federation as another form of API. There is no restriction to the content being federated: you can implement a microblogging platform, link aggregator, video hosting site or any other type of social media. The goal is to encapsulate all basic functionality, so that developers can easily implement federation without any prior knowledge.
+
+Using this library can help to share core Activitypub logic between different projects, so that the same code doesn't have to be implemented and maintained separately by each project. This way improvements can benefit everyone. It also encourages the use of effective patterns to make Rust and Activitypub work together. All of this has been proven to work in [Lemmy](https://join-lemmy.org/) which uses this library and is the biggest Activitypub project written in Rust.
 
 The ActivityPub protocol is a decentralized social networking protocol. It allows web servers to exchange data using JSON over HTTP. Data can be fetched on demand, and also delivered directly to inboxes for live updates.
 

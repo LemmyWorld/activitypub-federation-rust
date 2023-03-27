@@ -9,6 +9,7 @@ use crate::{
     error::{Error, Error::ActivitySignatureInvalid},
     protocol::public_key::main_key_id,
 };
+use base64::{engine::general_purpose::STANDARD_NO_PAD as Base64, Engine};
 use http::{header::HeaderName, uri::PathAndQuery, HeaderValue, Method, Uri};
 use http_signature_normalization_reqwest::prelude::{Config, SignExt};
 use once_cell::sync::{Lazy, OnceCell};
@@ -84,7 +85,7 @@ pub(crate) async fn sign_request(
                 let mut signer = Signer::new(MessageDigest::sha256(), &private_key)?;
                 signer.update(signing_string.as_bytes())?;
 
-                Ok(base64::encode(signer.sign_to_vec()?)) as Result<_, anyhow::Error>
+                Ok(Base64.encode(signer.sign_to_vec()?)) as Result<_, anyhow::Error>
             },
         )
         .await
@@ -122,7 +123,7 @@ where
             let public_key = PKey::public_key_from_pem(public_key.as_bytes())?;
             let mut verifier = Verifier::new(MessageDigest::sha256(), &public_key)?;
             verifier.update(signing_string.as_bytes())?;
-            Ok(verifier.verify(&base64::decode(signature)?)?)
+            Ok(verifier.verify(&Base64.decode(signature)?)?)
         })
         .map_err(Error::other)?;
 
@@ -179,7 +180,7 @@ pub(crate) fn verify_inbox_hash(
 
     for part in digest {
         hasher.update(body);
-        if base64::encode(hasher.finalize_reset()) != part.digest {
+        if Base64.encode(hasher.finalize_reset()) != part.digest {
             return Err(Error::ActivityBodyDigestInvalid);
         }
     }
