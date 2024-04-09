@@ -186,6 +186,7 @@ pub(crate) fn generate_request_headers(inbox_url: &Url) -> HeaderMap {
 }
 
 #[cfg(test)]
+#[allow(clippy::unwrap_used)]
 mod tests {
     use axum::extract::State;
     use bytes::Bytes;
