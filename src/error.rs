@@ -3,7 +3,10 @@
 use std::string::FromUtf8Error;
 
 use http_signature_normalization_reqwest::SignError;
-use openssl::error::ErrorStack;
+use rsa::{
+    errors::Error as RsaError,
+    pkcs8::{spki::Error as SpkiError, Error as Pkcs8Error},
+};
 use url::Url;
 
 use crate::fetch::webfinger::WebFingerError;
@@ -67,8 +70,20 @@ pub enum Error {
     Other(String),
 }
 
-impl From<ErrorStack> for Error {
-    fn from(value: ErrorStack) -> Self {
+impl From<RsaError> for Error {
+    fn from(value: RsaError) -> Self {
+        Error::Other(value.to_string())
+    }
+}
+
+impl From<Pkcs8Error> for Error {
+    fn from(value: Pkcs8Error) -> Self {
+        Error::Other(value.to_string())
+    }
+}
+
+impl From<SpkiError> for Error {
+    fn from(value: SpkiError) -> Self {
         Error::Other(value.to_string())
     }
 }
